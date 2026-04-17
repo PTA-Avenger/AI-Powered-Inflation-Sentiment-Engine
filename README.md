@@ -1,6 +1,6 @@
 # AI-Powered Inflation Sentiment Engine
 
-A production-grade NLP pipeline that analyzes South African financial news and social media sentiment to gauge public perception of the Rand (ZAR) and inflation. Designed to support SARB's monetary policy mandate.
+A production-grade NLP pipeline that analyzes South African financial news and social media sentiment to gauge public perception of the Rand (ZAR) and inflation. 
 
 ## 🎯 Project Overview
 
@@ -508,15 +508,6 @@ psycopg2.OperationalError: could not connect to server
 - Increase Lambda memory (currently 1024 MB)
 - Reduce batch size in .env
 - Implement pagination for large datasets
-
-## 📞 Contact & Support
-
-For SARB Monetary Policy team integration:
-- Documentation: [Internal Wiki Link]
-- Slack: #inflation-sentiment-engine
-- Issues: GitHub Issues
-
----
 
 **Last Updated:** April 2026  
 **Status:** Production Ready  
