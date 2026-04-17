@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: inflation-sentiment-db
+    environment:
+      POSTGRES_USER: sentiment_user
+      POSTGRES_PASSWORD: changeme_secure_password
+      POSTGRES_DB: inflation_sentiment
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - sentiment-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sentiment_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mcp-server:
+    build: .
+    container_name: sentiment-mcp-server
+    environment:
+      DATABASE_URL: postgresql://sentiment_user:changeme_secure_password@postgres:5432/inflation_sentiment
+      MCP_HOST: 0.0.0.0
+      MCP_PORT: 8000
+      MCP_SECRET_KEY: ${MCP_SECRET_KEY:-change-me-in-production}
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - sentiment-network
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  sentiment-network:
+    driver: bridge
